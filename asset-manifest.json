@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/TimePortal/static/css/main.791db15f.css",
+    "main.js": "/TimePortal/static/js/main.6ca5c3fa.js",
+    "static/js/453.4ab2018e.chunk.js": "/TimePortal/static/js/453.4ab2018e.chunk.js",
+    "index.html": "/TimePortal/index.html",
+    "main.791db15f.css.map": "/TimePortal/static/css/main.791db15f.css.map",
+    "main.6ca5c3fa.js.map": "/TimePortal/static/js/main.6ca5c3fa.js.map",
+    "453.4ab2018e.chunk.js.map": "/TimePortal/static/js/453.4ab2018e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.791db15f.css",
+    "static/js/main.6ca5c3fa.js"
+  ]
+}
