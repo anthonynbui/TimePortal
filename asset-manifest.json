@@ -1,15 +1,25 @@
 {
   "files": {
-    "main.css": "/TimePortal/static/css/main.791db15f.css",
-    "main.js": "/TimePortal/static/js/main.6ca5c3fa.js",
+    "main.css": "/TimePortal/static/css/main.702b59ed.css",
+    "main.js": "/TimePortal/static/js/main.506769e8.js",
     "static/js/453.4ab2018e.chunk.js": "/TimePortal/static/js/453.4ab2018e.chunk.js",
+    "static/media/TestOverlay.webm": "/TimePortal/static/media/TestOverlay.e7c1387c1e63f45b7369.webm",
+    "static/media/LoadingCircle.mp4": "/TimePortal/static/media/LoadingCircle.abcf932faa41528a20cc.mp4",
+    "static/media/StarsLoop.mp4": "/TimePortal/static/media/StarsLoop.3513dfa9604abd2e8068.mp4",
+    "static/media/copytoken.gif": "/TimePortal/static/media/copytoken.9f3c5088e97a9d669eb9.gif",
+    "static/media/TimePortal.gif": "/TimePortal/static/media/TimePortal.f1db2cc34fc227e5ffd7.gif",
+    "static/media/timeportal-theme.mp3": "/TimePortal/static/media/timeportal-theme.6513e1777aeb1c2c383c.mp3",
+    "static/media/PortalLogo.png": "/TimePortal/static/media/PortalLogo.9c189119fd8931ab38df.png",
+    "static/media/PhotonPng.png": "/TimePortal/static/media/PhotonPng.2e1d2d578b815c4e7a4c.png",
+    "static/media/TwitterPng.png": "/TimePortal/static/media/TwitterPng.9eb6e0c77bed1befe331.png",
+    "static/media/button-hover.mp3": "/TimePortal/static/media/button-hover.72d377026c32d73b1c88.mp3",
     "index.html": "/TimePortal/index.html",
-    "main.791db15f.css.map": "/TimePortal/static/css/main.791db15f.css.map",
-    "main.6ca5c3fa.js.map": "/TimePortal/static/js/main.6ca5c3fa.js.map",
+    "main.702b59ed.css.map": "/TimePortal/static/css/main.702b59ed.css.map",
+    "main.506769e8.js.map": "/TimePortal/static/js/main.506769e8.js.map",
     "453.4ab2018e.chunk.js.map": "/TimePortal/static/js/453.4ab2018e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.791db15f.css",
-    "static/js/main.6ca5c3fa.js"
+    "static/css/main.702b59ed.css",
+    "static/js/main.506769e8.js"
   ]
 }
