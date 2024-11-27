@@ -165,7 +165,7 @@ function App() {
         {/* Social Media Links */}
         <div className="flex space-x-4 justify-center mb-6 fade-in">
           <a
-            href="https://x.com/INTIMEPORTAL"
+            href="https://x.com/TPortalCoin"
             target="_blank"
             rel="noopener noreferrer"
             className="float-wave hover-stop"
