@@ -165,7 +165,7 @@ body {
 
 #coinLogo {
   position: fixed; /* Keeps the logo fixed in place relative to the viewport */
-  top: 4%; /* Adjust the position */
+  top: 6%; /* Adjust the position */
   right: 4%; /* Adjust the position */
   width: 50vw; /* Set width as a percentage of the viewport width */
   max-width: 250px; /* Set a maximum size */
@@ -177,7 +177,12 @@ body {
   will-change: transform; /* Optimize performance */
 }
 
-
+#copytoken {
+  position: fixed; /* Keeps the logo fixed in place relative to the viewport */
+  top: 3%; /* Adjust the position */
+  right: 2.5%; /* Adjust the position */
+  max-width: 300px;
+}
 
 .speech-bubble {
   position: absolute;

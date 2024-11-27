@@ -26,11 +26,11 @@ function App() {
 
   async function generateFact() {
     const [year, month, day] = dateInput.split("-"); // Split input date into components
-  
+
     try {
       const dataReceived = await fetchFact(month, day); // Fetch facts using utility function
       setData(dataReceived);
-  
+
       // Apply the facts once data is successfully set
       await applyFact(dataReceived, year);
     } catch (error) {
@@ -47,12 +47,11 @@ function App() {
       setTransitionTriggered(false); // Allow further attempts
     }
   }
-  
 
   async function applyFact(dataReceived, year) {
     const categories = ["selected", "events", "holidays", "deaths", "births"];
     let allFacts = [];
-  
+
     // Combine all categories of facts into a single array
     categories.forEach((category) => {
       if (dataReceived[category] && dataReceived[category].length > 0) {
@@ -61,12 +60,12 @@ function App() {
         );
       }
     });
-  
+
     // Filter facts to match the specified year
     const factsForYear = allFacts.filter(
       (fact) => fact.year && parseInt(fact.year) === parseInt(year)
     );
-  
+
     if (factsForYear.length > 0) {
       setFacts(factsForYear); // Set filtered facts
       setDateMessage("Enter a significant date");
@@ -75,11 +74,11 @@ function App() {
       setDateMessage("No significant events found"); // Show message if no facts found
       setFacts([]);
     }
-  
+
     setLoadingVisible(false);
     setTransitionTriggered(false);
   }
-  
+
   async function searchDate() {
     if (!dateInput) {
       setDateMessage("Please enter a valid date!"); // Display error if no date entered
@@ -87,7 +86,7 @@ function App() {
       return;
     }
     setLoadingVisible(true); // Show loading video
-  
+
     // Await the generateFact function to ensure it completes before proceeding
     await generateFact();
   }
@@ -108,7 +107,7 @@ function App() {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.10; // Set volume to 15%
+      audioRef.current.volume = 0.1; // Set volume to 15%
     }
 
     if (hoverAudioRef.current) {
@@ -130,8 +129,8 @@ function App() {
         Your browser does not support the audio element.
       </audio>
 
+      <img id="copytoken" src={CopyToken} />
       <div id="coinLogo">
-        <img src={CopyToken} />
         <img
           src={PortalLogo}
           alt="Spinning Coin Logo"
@@ -151,7 +150,6 @@ function App() {
       </video>
 
       {/* Transition Video */}
-
 
       {/* Main Content */}
       <div
