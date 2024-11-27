@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
 import { fetchFact } from "./api/utils";
 import StarsLoop from "./StarsLoop.mp4"; // Background video
@@ -8,94 +8,77 @@ import TwitterLogo from "./TwitterPng.png"; // Social media logos
 import PhotonLogo from "./PhotonPng.png";
 import PortalLogo from "./PortalLogo.png";
 import LoadingCircle from "./LoadingCircle.mp4";
+import ButtonHoverSound from "./button-hover.mp3";
+import TimePortalTheme from "./timeportal-theme.mp3";
 
 function App() {
   const [dateInput, setDateInput] = useState(""); // State for date input
-  const [data, setDataInput] = useState([]); // State for date input
+  const [data, setData] = useState([]); // State for date input
   const [facts, setFacts] = useState([]); // State to hold fetched facts
   const [transitionActive, setTransitionActive] = useState(false); // State to control transition video visibility
   const [loadingVisible, setLoadingVisible] = useState(false); // State to control loading video visibility
   const [transitionTriggered, setTransitionTriggered] = useState(false); // State to prevent multiple triggers
   const transitionRef = useRef(null); // Ref for transition video
   const [dateMessage, setDateMessage] = useState("Enter a significant date");
+  const audioRef = useRef(null);
+  const hoverAudioRef = useRef(null); // Ref for hover sound
 
   async function generateFact() {
-    // Function to fetch and display facts based on the input date
-
     const [year, month, day] = dateInput.split("-"); // Split input date into components
-
+  
     try {
       const dataReceived = await fetchFact(month, day); // Fetch facts using utility function
-      setDataInput(dataReceived);
-      setTransitionActive(true);
+      setData(dataReceived);
+  
+      // Apply the facts once data is successfully set
+      await applyFact(dataReceived, year);
     } catch (error) {
       setDateMessage("Server error, please try again");
       console.error(error);
     }
   }
-
-  // Function to fetch and display facts based on the input date
-  async function applyFact() {
-    const [year, month, day] = dateInput.split("-"); // Split input date into components
-
-    // Activate transition once data is fetched
+  
+  async function applyFact(dataReceived, year) {
     const categories = ["selected", "events", "holidays", "deaths", "births"];
     let allFacts = [];
-
+  
     // Combine all categories of facts into a single array
     categories.forEach((category) => {
-      if (data[category] && data[category].length > 0) {
+      if (dataReceived[category] && dataReceived[category].length > 0) {
         allFacts = allFacts.concat(
-          data[category].map((item) => ({ ...item, category }))
+          dataReceived[category].map((item) => ({ ...item, category }))
         );
       }
     });
-
+  
     // Filter facts to match the specified year
     const factsForYear = allFacts.filter(
       (fact) => fact.year && parseInt(fact.year) === parseInt(year)
     );
-
+  
     if (factsForYear.length > 0) {
       setFacts(factsForYear); // Set filtered facts
       setDateMessage("Enter a significant date");
       console.log(factsForYear);
     } else {
-      console.log("No significant events");
       setDateMessage("No significant events found"); // Show message if no facts found
       setFacts([]);
     }
-
+  
+    setLoadingVisible(false);
     setTransitionTriggered(false);
   }
-
-  // Function triggered when the "Start" button is clicked
-  function searchDate() {
+  
+  async function searchDate() {
     if (!dateInput) {
       setDateMessage("Please enter a valid date!"); // Display error if no date entered
       setFacts([]); // Clear facts
       return;
     }
     setLoadingVisible(true); // Show loading video
-
-    generateFact(); // Start fetching data
-  }
-
-  // Function to track video progress and start actions at 90%
-  function handleTransitionProgress() {
-    const video = transitionRef.current;
-    if (!video || transitionTriggered) return;
-
-    const progress = video.currentTime / video.duration;
-    if (progress >= 0.7) {
-      setTransitionTriggered(true); // Prevent multiple triggers
-      applyFact();
-    }
-    if (progress >= 1) {
-      setTransitionActive(false); // Hide transition video
-      // Stop loading video
-      setLoadingVisible(false);
-    }
+  
+    // Await the generateFact function to ensure it completes before proceeding
+    await generateFact();
   }
 
   function copyToClipboard() {
@@ -103,8 +86,39 @@ function App() {
     alert("Copied to clipboard! \nTOKEN ADDRESS ");
   }
 
+  function playHoverSound() {
+    if (hoverAudioRef.current) {
+      hoverAudioRef.current.currentTime = 0; // Restart the sound
+      hoverAudioRef.current.play().catch((err) => {
+        console.error("Hover sound playback failed:", err);
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.0; // Set volume to 15%
+    }
+
+    if (hoverAudioRef.current) {
+      hoverAudioRef.current.volume = 0.8; // Set hover sound volume
+    }
+  }, []);
+
   return (
     <div className="overflow-auto font-sans space-gas-bg text-white relative">
+      {/* Hover Sound */}
+      <audio ref={hoverAudioRef}>
+        <source src={ButtonHoverSound} type="audio/mp3" />
+        Your browser does not support the audio element.
+      </audio>
+
+      {/* Background Audio */}
+      <audio ref={audioRef} autoPlay loop>
+        <source src={TimePortalTheme} type="audio/mp3" />
+        Your browser does not support the audio element.
+      </audio>
+
       <div id="coinLogo">
         <p>Copy Token</p>
         <img
@@ -126,17 +140,7 @@ function App() {
       </video>
 
       {/* Transition Video */}
-      {transitionActive && (
-        <video
-          ref={transitionRef}
-          className="absolute top-0 left-0 w-full h-full object-cover z-50"
-          autoPlay
-          muted
-          onTimeUpdate={handleTransitionProgress} // Track video progress
-        >
-          <source src={TestOverlay} type="video/webm" />
-        </video>
-      )}
+
 
       {/* Main Content */}
       <div
@@ -157,7 +161,12 @@ function App() {
             rel="noopener noreferrer"
             className="float-wave hover-stop"
           >
-            <img src={TwitterLogo} alt="Twitter Logo" className="w-12 h-12" />
+            <img
+              src={TwitterLogo}
+              alt="Twitter Logo"
+              className="w-12 h-12"
+              onMouseEnter={playHoverSound} // Play hover sound
+            />
           </a>
           <a
             href="https://photon-sol.tinyastro.io/"
@@ -165,7 +174,12 @@ function App() {
             rel="noopener noreferrer"
             className="float-wave hover-stop"
           >
-            <img src={PhotonLogo} alt="Photon Logo" className="w-12 h-12" />
+            <img
+              src={PhotonLogo}
+              alt="Photon Logo"
+              className="w-12 h-12"
+              onMouseEnter={playHoverSound} // Play hover sound
+            />
           </a>
         </div>
 
@@ -180,6 +194,7 @@ function App() {
           <button
             onClick={searchDate}
             disabled={loadingVisible}
+            onMouseEnter={playHoverSound} // Play hover sound
             className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md"
           >
             {!loadingVisible && "Enter the Portal"}
