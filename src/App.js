@@ -97,7 +97,7 @@ function App() {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.0; // Set volume to 15%
+      audioRef.current.volume = 0.15; // Set volume to 15%
     }
 
     if (hoverAudioRef.current) {
