@@ -10,6 +10,7 @@ import PortalLogo from "./PortalLogo.png";
 import LoadingCircle from "./LoadingCircle.mp4";
 import ButtonHoverSound from "./button-hover.mp3";
 import TimePortalTheme from "./timeportal-theme.mp3";
+import CopyToken from "./copytoken.gif";
 
 function App() {
   const [dateInput, setDateInput] = useState(""); // State for date input
@@ -33,11 +34,21 @@ function App() {
       // Apply the facts once data is successfully set
       await applyFact(dataReceived, year);
     } catch (error) {
-      setDateMessage("Server error, please try again");
+      if (error.message.includes("500")) {
+        // Specific handling for 500 server error
+        setDateMessage("Server error, please try again");
+      } else {
+        // Handle other errors
+        setDateMessage("An unexpected error occurred, please try again");
+      }
       console.error(error);
+    } finally {
+      setLoadingVisible(false); // Ensure loading is hidden after attempt
+      setTransitionTriggered(false); // Allow further attempts
     }
   }
   
+
   async function applyFact(dataReceived, year) {
     const categories = ["selected", "events", "holidays", "deaths", "births"];
     let allFacts = [];
@@ -97,7 +108,7 @@ function App() {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.15; // Set volume to 15%
+      audioRef.current.volume = 0.10; // Set volume to 15%
     }
 
     if (hoverAudioRef.current) {
@@ -120,7 +131,7 @@ function App() {
       </audio>
 
       <div id="coinLogo">
-        <p>Copy Token</p>
+        <img src={CopyToken} />
         <img
           src={PortalLogo}
           alt="Spinning Coin Logo"
