@@ -1,52 +1,336 @@
-.time-portal {
-  font-family: Arial, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Poppins", Arial, sans-serif; /* Modern and readable font */
   text-align: center;
-  background-color: #f0f8ff;
-  color: #333;
-  padding: 20px;
+  color: #e0e0e0; /* Softer text color */
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  background: linear-gradient(
+    135deg,
+    #1f1c2c,
+    #3c3b5d
+  ); /* Darker gradient background for improved contrast */
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes jiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); /* Start at 0 degrees */
+  }
+  100% {
+    transform: rotate(360deg); /* Rotate 360 degrees without inversion */
+  }
+}
+
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+    opacity: 1;
+  }
+  20% {
+    transform: translate(-2px, -2px);
+    opacity: 0.8;
+  }
+  40% {
+    transform: translate(2px, -1px);
+    opacity: 0.6;
+  }
+  60% {
+    transform: translate(-1px, 2px);
+    opacity: 0.8;
+  }
+  80% {
+    transform: translate(1px, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+}
+
+
+
+.shake:hover {
+  animation: jiggle 0.4s ease-in-out;
+}
+
+.float-wave:nth-child(1) {
+  animation: float 3s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.float-wave:nth-child(2) {
+  animation: float 3s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.float-wave:nth-child(3) {
+  animation: float 3s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+.hover-stop:hover {
+  animation: none;
+}
+
+.hover-stop:hover {
+  animation: jiggle 0.4s ease-in-out;
+}
+
+.glitch:hover {
+  animation: glitch 0.2s steps(2, jump-none) infinite;
+}
+
+.space-gas-bg {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
+  z-index: 1;
+}
+
+#backgroundVideo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1;
+  object-fit: cover;
+}
+
+#transitionVideo {
+  display: none;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#transitionVideo.visible {
+  display: block;
+  opacity: 1;
+}
+
+#portal-logo {
+  position: absolute;
+  top: 5%; /* Position relative to the viewport height */
+
+  height: auto; /* Maintain aspect ratio */
+}
+
+#coinLogo {
+  position: fixed; /* Keeps the logo fixed in place relative to the viewport */
+  top: 6%; /* Adjust the position */
+  right: 4%; /* Adjust the position */
+  width: 50vw; /* Set width as a percentage of the viewport width */
+  max-width: 250px; /* Set a maximum size */
+  height: auto; /* Maintain aspect ratio */
+  animation: spin 10s linear infinite;
+  z-index: 100;
+  cursor: pointer;
+  transform-origin: center; /* Spin around the center */
+  will-change: transform; /* Optimize performance */
+}
+
+#copytoken {
+  position: fixed; /* Keeps the logo fixed in place relative to the viewport */
+  top: 3%; /* Adjust the position */
+  right: 2.5%; /* Adjust the position */
+  max-width: 300px;
+}
+
+.speech-bubble {
+  position: absolute;
+  top: 50%;
+  left: -160px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  white-space: nowrap;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#coinLogo:hover + .speech-bubble {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) translateX(-10px);
+}
+
+
+/* Main content styles */
+.main-content {
+  opacity: 0;
+  animation: fadeIn 1s 2s forwards;
+  position: absolute;
+  z-index: 2;
+  overflow-y: auto;
+}
+
+h1 {
+  margin-top: 10px;
+  font-size: 4.5em;
+  color: #ffd166; /* Warm and vibrant for improved contrast */
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  padding: 20px 40px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
+  display: inline-block;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+p {
+  font-size: 2rem;
+  color: #ffffff; /* Softer and easier to read */
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+  line-height: 1.6;
+}
+
+/* Input and button styles */
 input,
 button {
-  padding: 10px;
+  padding: 12px 20px;
   margin: 10px;
   font-size: 1rem;
-  border: 2px solid #0078d7;
-  border-radius: 5px;
+  border: none;
+  border-radius: 25px;
+  z-index: 3;
+  position: relative;
+}
+
+input {
+  border: 2px solid #ffd166;
+  background: rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  outline: none;
 }
 
 button {
-  background-color: #0078d7;
+  background: linear-gradient(135deg, #0078d7, #005cbf);
   color: white;
   cursor: pointer;
+  font-weight: bold;
+  border: 2px solid #005cbf;
+  transition: background 0.3s, transform 0.2s, border-color 0.3s;
 }
 
 button:hover {
-  background-color: #005cbf;
+  background: linear-gradient(135deg, #005cbf, #003f8c);
+  transform: scale(1.05);
+  border-color: #ffc078;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
-.result {
-  margin-top: 20px;
-  font-size: 1.2rem;
+button:active {
+  transform: scale(0.95);
+  background: #003f8c;
 }
 
-.animation {
+button:focus,
+input:focus {
+  outline: 3px solid #ffd166;
+  outline-offset: 2px;
+}
+/* Results container */
+.output {
   margin: 20px auto;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: linear-gradient(45deg, #ff7eb3, #ff758c, #f24e79);
-  animation: pulse 1.5s infinite;
+  padding: 20px;
+  max-width: 800px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.8;
-  }
+.event {
+  margin: 15px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #f1f1f1; /* Softer, lighter shade for readability */
+  display: flex;
+  flex-direction: column; /* Stack text and image vertically */
+  gap: 10px; /* Adds spacing between the text and the image */
+  align-items: center; /* Centers content horizontally */
+}
+
+.event strong {
+  font-weight: bold;
+  color: #ffd166;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
+}
+
+.event:nth-child(odd) {
+  border-left: 5px solid #ff7eb3;
+}
+
+.event:nth-child(even) {
+  border-left: 5px solid #85e3ff;
+}
+
+.fact-image {
+  height: 80%;
+  width: 80%;
+  margin: auto; /* Centers the image horizontally and vertically if the container allows */
+  display: block; /* Ensures the image behaves like a block-level element */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#main-content {
+  top: 0px
 }
